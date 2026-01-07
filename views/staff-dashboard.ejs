@@ -1,0 +1,25 @@
+<%- include('partials/head', { title }) %>
+<%- include('partials/navbar') %>
+
+<main class="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-10 sm:px-6 lg:px-8">
+  <section class="rounded-2xl bg-white p-8 shadow-sm">
+    <h1 class="text-3xl font-semibold text-primary-700">แดชบอร์ดเจ้าหน้าที่</h1>
+    <p class="mt-2 text-sm text-slate-600">
+      หน้านี้จะแสดงรายละเอียดสำหรับเจ้าหน้าที่ รวมถึงข่าวประกาศ หรือรายการงานที่ต้องทำในอนาคต
+    </p>
+
+    <%- include('partials/flash') %>
+
+    <div class="mt-6 rounded-xl border border-primary-100 bg-primary-50/70 p-6 text-sm text-primary-700">
+      <h2 class="text-lg font-semibold">สถานะระบบ</h2>
+      <p class="mt-2 leading-relaxed">
+        ขณะนี้ระบบพร้อมให้บริการ คุณสามารถตรวจสอบข่าวสารเพิ่มเติมจากผู้ดูแลระบบ หรืออัปเดตรายการงานของคุณได้ที่นี่
+      </p>
+      <p class="mt-4 leading-relaxed text-sm text-primary-600/80">
+        หากต้องการสิทธิ์เพิ่มเติม กรุณาติดต่อผู้ดูแลระบบ
+      </p>
+    </div>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

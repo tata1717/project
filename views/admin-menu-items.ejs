@@ -1,0 +1,267 @@
+<%- include('partials/head', { title }) %>
+<%- include('partials/navbar') %>
+
+<main class="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-12 sm:px-6 lg:px-8">
+  <header class="flex flex-col gap-6 rounded-3xl border border-primary-100 bg-white/80 p-6 shadow-sm backdrop-blur sm:flex-row sm:items-center sm:justify-between">
+    <div class="space-y-2">
+      <p class="text-xs font-semibold uppercase tracking-wider text-primary-500">จัดการเนื้อหา</p>
+      <h1 class="text-3xl font-semibold text-primary-700">จัดการเมนูย่อ</h1>
+      <p class="max-w-xl text-sm leading-relaxed text-slate-600">
+        จัดการเมนูย่อที่แสดงในหน้าแรกตามหมวดเมนู
+      </p>
+    </div>
+    <div class="flex flex-wrap items-center gap-3">
+      <a
+        href="/admin/menu-items/new"
+        class="inline-flex items-center gap-2 rounded-full bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-primary-700"
+      >
+        <svg class="h-4 w-4 text-white/90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m7-7H5" />
+        </svg>
+        เพิ่มเมนูย่อใหม่
+      </a>
+      <a
+        href="/admin/menu-categories"
+        class="inline-flex items-center gap-2 rounded-full border border-primary-200/80 px-5 py-2.5 text-sm font-semibold text-primary-600 transition hover:bg-primary-50"
+      >
+        <svg class="h-4 w-4 text-primary-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        จัดการหมวดเมนู
+      </a>
+    </div>
+  </header>
+
+  <%- include('partials/flash') %>
+
+  <section class="rounded-3xl bg-white/90 shadow-sm ring-1 ring-black/5 backdrop-blur">
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-6 py-4">
+      <div>
+        <h2 class="text-lg font-semibold text-slate-800">รายการเมนูย่อ</h2>
+        <p class="text-xs text-slate-500">เรียงตามหมวดเมนูและลำดับการแสดงผล</p>
+      </div>
+      <span class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+        ทั้งหมด <%= items.length %> รายการ
+      </span>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200 text-sm">
+        <thead class="bg-slate-50/80 text-xs uppercase tracking-wide text-slate-500">
+          <tr>
+            <th scope="col" class="px-4 py-3 text-left">เมนูย่อ</th>
+            <th scope="col" class="px-4 py-3 text-left">หมวดเมนู</th>
+            <th scope="col" class="px-4 py-3 text-left">ลิงก์</th>
+            <th scope="col" class="px-4 py-3 text-left">รูปภาพ</th>
+            <th scope="col" class="px-4 py-3 text-left">สถานะ</th>
+            <th scope="col" class="px-4 py-3 text-center">การจัดการ</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <% if (items && items.length) { %>
+            <% items.forEach((item) => { %>
+              <tr class="align-top transition hover:bg-primary-50/20 <%= item.isActive ? '' : 'bg-slate-50/50' %>">
+                <td class="px-4 py-4">
+                  <div class="flex items-start gap-3">
+                    <% if (item.imagePath) { %>
+                      <img
+                        src="/<%= item.imagePath %>"
+                        alt="<%= item.title %>"
+                        class="h-10 w-10 rounded-lg object-cover"
+                      />
+                    <% } else { %>
+                      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-<%= item.categoryColor %>-100 font-semibold text-<%= item.categoryColor %>-700">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                      </div>
+                    <% } %>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm font-semibold text-slate-800"><%= item.title %></span>
+                        <% if (!item.isActive) { %>
+                          <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">
+                            ปิดใช้งาน
+                          </span>
+                        <% } %>
+                      </div>
+                      <% if (item.description) { %>
+                        <div class="mt-1 text-xs text-slate-500 line-clamp-2"><%= item.description %></div>
+                      <% } %>
+                      <div class="mt-1 text-xs text-slate-400">
+                        ลำดับ: <%= item.displayOrder %>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-4 py-4 text-sm text-slate-600">
+                  <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1 rounded-full bg-<%= item.categoryColor %>-100 px-3 py-1 text-xs font-semibold text-<%= item.categoryColor %>-700">
+                      <%= item.categoryName %>
+                    </span>
+                  </div>
+                </td>
+                <td class="px-4 py-4 text-sm text-slate-600">
+                  <% if (item.link) { %>
+                    <a
+                      href="<%= item.link %>"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700"
+                    >
+                      <span class="truncate max-w-32"><%= item.link %></span>
+                      <svg class="h-3.5 w-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  <% } else { %>
+                    <span class="text-xs text-slate-400">ไม่มีลิงก์</span>
+                  <% } %>
+                </td>
+                <td class="px-4 py-4 text-sm text-slate-600">
+                  <% if (item.imagePath) { %>
+                    <span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                      <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                      </svg>
+                      มีรูปภาพ
+                    </span>
+                  <% } else { %>
+                    <span class="text-xs text-slate-400">ไม่มีรูปภาพ</span>
+                  <% } %>
+                </td>
+                <td class="px-4 py-4">
+                  <div class="flex flex-wrap gap-2 text-xs font-semibold">
+                    <span class="inline-flex items-center gap-1 rounded-full px-3 py-1 <%= item.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600' %>">
+                      <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                      </svg>
+                      <%= item.isActive ? 'เปิดใช้งาน' : 'ปิดใช้งาน' %>
+                    </span>
+                  </div>
+                </td>
+                <td class="px-4 py-4">
+                  <div class="flex flex-col items-stretch justify-center gap-2 sm:flex-row">
+                    <a
+                      href="/admin/menu-items/<%= item.id %>/edit"
+                      class="inline-flex w-full items-center justify-center gap-1 rounded-full bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-primary-700"
+                    >
+                      <svg class="h-3.5 w-3.5 text-white/90" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m11 5 3 3m0 0-3 3m3-3v12" />
+                      </svg>
+                      แก้ไข
+                    </a>
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 rounded-full bg-red-500/90 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-red-600"
+                      onclick="openDeleteModal('<%= item.id %>', '<%= item.title %>', '<%= item.categoryName %>')"
+                    >
+                      <svg class="h-3.5 w-3.5 text-white/90" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                      </svg>
+                      ลบ
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="6" class="px-6 py-12 text-center text-slate-500">
+                ยังไม่มีเมนูย่อในระบบ เริ่มต้นด้วยการเพิ่มเมนูย่อใหม่ทันที
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+  <div class="flex min-h-screen items-center justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+    <!-- Background overlay -->
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeDeleteModal()"></div>
+
+    <!-- Modal panel -->
+    <div class="inline-block transform overflow-hidden rounded-2xl bg-white px-4 pb-4 pt-5 text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 sm:align-middle">
+      <div class="sm:flex sm:items-start">
+        <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+          <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+        </div>
+        <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+          <h3 class="text-lg font-medium leading-6 text-gray-900" id="modalTitle">
+            ยืนยันการลบเมนูย่อ
+          </h3>
+          <div class="mt-2">
+            <p class="text-sm text-gray-500" id="modalMessage">
+              คุณแน่ใจหรือไม่ที่จะลบเมนูย่อนี้?
+            </p>
+            <div class="mt-3 rounded-lg bg-red-50 p-3" id="modalWarning">
+              <p class="text-sm text-red-700">
+                <strong>คำเตือน:</strong> การลบจะทำให้เมนูย่อนี้หายไปจากหน้าเว็บ
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+        <form id="deleteForm" method="post" class="inline-block">
+          <button
+            type="submit"
+            class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+          >
+            ลบ
+          </button>
+        </form>
+        <button
+          type="button"
+          onclick="closeDeleteModal()"
+          class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+        >
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openDeleteModal(id, title, categoryName) {
+  const modal = document.getElementById('deleteModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalMessage = document.getElementById('modalMessage');
+  const modalWarning = document.getElementById('modalWarning');
+  const deleteForm = document.getElementById('deleteForm');
+  
+  modalTitle.textContent = `ยืนยันการลบเมนูย่อ "${title}"`;
+  modalMessage.textContent = `คุณแน่ใจหรือไม่ที่จะลบเมนูย่อ "${title}" ในหมวด "${categoryName}"?`;
+  
+  modalWarning.innerHTML = `
+    <p class="text-sm text-red-700">
+      <strong>คำเตือน:</strong> การลบจะทำให้เมนูย่อนี้หายไปจากหน้าเว็บและไม่สามารถกู้คืนได้
+    </p>
+  `;
+  
+  deleteForm.action = `/admin/menu-items/${id}/delete`;
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+  const modal = document.getElementById('deleteModal');
+  modal.classList.add('hidden');
+  document.body.style.overflow = 'auto';
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeDeleteModal();
+  }
+});
+</script>
+
+<%- include('partials/footer') %>

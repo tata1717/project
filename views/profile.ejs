@@ -1,0 +1,99 @@
+<%- include('partials/head', { title }) %>
+<%- include('partials/navbar') %>
+
+<main class="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
+  <%- include('partials/flash') %>
+  <section class="rounded-2xl bg-white p-8 shadow-sm">
+    <header class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold text-primary-700">โปรไฟล์ของฉัน</h1>
+        <p class="text-sm text-slate-600">ปรับปรุงข้อมูลติดต่อและรูปโปรไฟล์เพื่อให้ทีมงานทราบข้อมูลล่าสุด</p>
+      </div>
+      <% if (user.profileImage) { %>
+        <div class="shrink-0">
+          <img
+            src="/<%= user.profileImage %>"
+            alt="รูปโปรไฟล์ของ <%= user.name %>"
+            class="h-20 w-20 rounded-full border border-slate-200 object-cover"
+          />
+        </div>
+      <% } %>
+    </header>
+
+    <form action="/profile" method="post" enctype="multipart/form-data" class="mt-8 space-y-6">
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div class="sm:col-span-2">
+          <label for="name" class="block text-sm font-medium text-slate-700">ชื่อ - นามสกุล</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            value="<%= user.name || '' %>"
+            class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700">อีเมล</label>
+          <p class="mt-2 text-sm text-slate-500"><%= user.email %></p>
+        </div>
+        <div>
+          <label for="phone" class="block text-sm font-medium text-slate-700">เบอร์โทรศัพท์</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            required
+            value="<%= user.phone || '' %>"
+            class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+        </div>
+        <div>
+          <label for="position" class="block text-sm font-medium text-slate-700">ตำแหน่ง</label>
+          <input
+            type="text"
+            id="position"
+            name="position"
+            required
+            value="<%= user.position || '' %>"
+            class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+        </div>
+        <div>
+          <label for="affiliation" class="block text-sm font-medium text-slate-700">สังกัด / หน่วยงาน</label>
+          <input
+            type="text"
+            id="affiliation"
+            name="affiliation"
+            required
+            value="<%= user.affiliation || '' %>"
+            class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="profileImage" class="block text-sm font-medium text-slate-700">รูปโปรไฟล์</label>
+        <input
+          type="file"
+          id="profileImage"
+          name="profileImage"
+          accept="image/*"
+          class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200 file:mr-4 file:rounded-md file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-primary-600 hover:file:bg-primary-100"
+        />
+        <p class="mt-2 text-xs text-slate-500">รองรับไฟล์ภาพไม่เกิน 2 MB (PNG, JPG, GIF ฯลฯ)</p>
+      </div>
+
+      <div class="flex justify-end">
+        <button
+          type="submit"
+          class="inline-flex items-center rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          บันทึกการเปลี่ยนแปลง
+        </button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

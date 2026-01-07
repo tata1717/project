@@ -1,0 +1,130 @@
+<%
+  const isEdit = mode === 'edit';
+  const formAction = isEdit ? `/admin/slider/${slider.id}` : '/admin/slider';
+%>
+
+<%- include('partials/head', { title }) %>
+<%- include('partials/navbar') %>
+
+<main class="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
+  <header class="space-y-2">
+    <h1 class="text-3xl font-semibold text-primary-700"><%= isEdit ? 'แก้ไขภาพสไลด์' : 'เพิ่มภาพสไลด์ใหม่' %></h1>
+    <p class="text-sm text-slate-600">กำหนดรายละเอียดและอัปโหลดภาพสำหรับแสดงบนสไลด์หน้าแรก</p>
+  </header>
+
+  <%- include('partials/flash') %>
+
+  <section class="rounded-3xl bg-white/90 p-8 shadow-sm ring-1 ring-black/5 backdrop-blur">
+    <form action="<%= formAction %>" method="post" enctype="multipart/form-data" class="space-y-6">
+      <div class="space-y-2">
+        <label for="title" class="block text-sm font-medium text-slate-700">หัวข้อสไลด์</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          value="<%= isEdit ? slider.title : '' %>"
+          class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label for="caption" class="block text-sm font-medium text-slate-700">คำบรรยาย (ไม่บังคับ)</label>
+        <textarea
+          id="caption"
+          name="caption"
+          rows="3"
+          class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+        ><%= isEdit && slider.caption ? slider.caption : '' %></textarea>
+        <p class="text-xs text-slate-500">แสดงเป็นข้อความประกอบใต้ภาพหรือบนภาพในสไลด์</p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div class="space-y-2 sm:col-span-2">
+          <label for="image" class="block text-sm font-medium text-slate-700">
+            ภาพสไลด์ <span class="text-rose-500">*</span>
+          </label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200 file:mr-4 file:rounded-md file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-primary-600 hover:file:bg-primary-100"
+          />
+          <p class="text-xs text-slate-500">รองรับไฟล์ภาพไม่เกิน 5 MB (PNG, JPG ฯลฯ)</p>
+        </div>
+
+        <% if (isEdit && slider.imagePath) { %>
+          <div class="sm:col-span-2">
+            <div class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 sm:flex-row sm:items-center">
+              <img
+                src="/<%= slider.imagePath %>"
+                alt="<%= slider.title %>"
+                class="h-32 w-full max-w-[10rem] rounded-xl object-cover ring-1 ring-slate-200"
+              />
+              <div class="space-y-2 text-sm text-slate-600">
+                <p class="font-semibold text-slate-700">ภาพปัจจุบัน</p>
+                <p class="text-xs text-slate-500">หากต้องการเปลี่ยนภาพ ให้เลือกไฟล์ใหม่ด้านบน (ระบบจะบันทึกภาพใหม่แทนภาพเดิม)</p>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div class="space-y-2">
+          <label for="link" class="block text-sm font-medium text-slate-700">ลิงก์ (ไม่บังคับ)</label>
+          <input
+            type="url"
+            id="link"
+            name="link"
+            placeholder="เช่น https://example.com/news"
+            value="<%= isEdit && slider.link ? slider.link : '' %>"
+            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+          <p class="text-xs text-slate-500">ระบบจะเปิดลิงก์นี้เมื่อคลิกปุ่ม “อ่านข่าว” หากปล่อยว่างจะไม่แสดงปุ่ม</p>
+        </div>
+        <div class="space-y-2">
+          <label for="display_order" class="block text-sm font-medium text-slate-700">ลำดับการแสดงผล</label>
+          <input
+            type="number"
+            id="display_order"
+            name="display_order"
+            value="<%= isEdit ? slider.displayOrder : 0 %>"
+            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+          <p class="text-xs text-slate-500">ค่าน้อยจะแสดงก่อน (ค่าเริ่มต้นคือ 0)</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3">
+        <label class="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
+          <input
+            type="checkbox"
+            name="is_active"
+            value="1"
+            class="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+            <%= isEdit ? (slider.isActive ? 'checked' : '') : 'checked' %>
+          />
+          แสดงสไลด์บนหน้าเว็บไซต์
+        </label>
+        <div class="flex gap-3">
+          <a
+            href="/admin/slider"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+          >
+            ยกเลิก
+          </a>
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-primary-700"
+          >
+            <%= isEdit ? 'บันทึกการแก้ไข' : 'บันทึกสไลด์' %>
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

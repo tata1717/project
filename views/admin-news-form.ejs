@@ -1,0 +1,212 @@
+<%
+  const isEdit = mode === 'edit';
+  const formAction = isEdit ? `/admin/news/${article.id}` : '/admin/news';
+  const pageTitle = isEdit ? 'แก้ไขข่าวประชาสัมพันธ์' : 'สร้างข่าวประชาสัมพันธ์';
+  const existingContent = isEdit ? article.content || '' : '';
+%>
+
+<%- include('partials/head', { title }) %>
+<%- include('partials/navbar') %>
+
+<main class="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8">
+  <style>
+    @import url('https://cdn.quilljs.com/1.3.7/quill.snow.css');
+    #editor .ql-editor {
+      min-height: 200px;
+    }
+  </style>
+  <header class="space-y-2">
+    <h1 class="text-3xl font-semibold text-primary-700"><%= pageTitle %></h1>
+    <p class="text-sm text-slate-600">
+      กรอกข้อมูลข่าวประชาสัมพันธ์เพื่อเผยแพร่บนหน้าเว็บไซต์ พร้อมแนบภาพและไฟล์ประกอบ (รองรับไฟล์สูงสุด 50 MB ต่อไฟล์)
+    </p>
+  </header>
+
+  <%- include('partials/flash') %>
+
+  <section class="rounded-3xl bg-white/90 p-8 shadow-sm ring-1 ring-black/5 backdrop-blur">
+    <form id="newsForm" action="<%= formAction %>" method="post" enctype="multipart/form-data" class="space-y-8">
+      <div class="space-y-3">
+        <label for="title" class="block text-sm font-medium text-slate-700">หัวข้อข่าว</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          value="<%= isEdit ? article.title : '' %>"
+          class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+        />
+      </div>
+
+      <div class="space-y-3">
+        <label class="block text-sm font-medium text-slate-700">รายละเอียด</label>
+        <div id="editor" class="min-h-[220px] rounded-xl border border-slate-200 bg-white text-sm shadow-sm focus-within:border-primary-400 focus-within:ring-2 focus-within:ring-primary-200"></div>
+        <input type="hidden" id="contentInput" name="content" />
+        <p class="text-xs text-slate-500">ใช้เครื่องมือจัดรูปแบบเพื่อเน้นข้อความ สร้างรายการ และแทรกลิงก์</p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div class="space-y-3">
+          <label for="category_id" class="block text-sm font-medium text-slate-700">หมวดหมู่ข่าว</label>
+          <select
+            id="category_id"
+            name="category_id"
+            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          >
+            <option value="">เลือกหมวดหมู่ข่าว</option>
+            <% if (categories && categories.length) { %>
+              <% categories.forEach((category) => { %>
+                <option value="<%= category.id %>" <%= isEdit && article.categoryId === category.id ? 'selected' : '' %>>
+                  <%= category.name %>
+                </option>
+              <% }) %>
+            <% } %>
+          </select>
+          <p class="text-xs text-slate-500">เลือกหมวดหมู่ข่าวที่เหมาะสม</p>
+        </div>
+
+        <div class="space-y-3">
+          <label for="image" class="block text-sm font-medium text-slate-700">ภาพหน้าปก</label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200 file:mr-4 file:rounded-md file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-primary-600 hover:file:bg-primary-100"
+          />
+          <p class="text-xs text-slate-500">ไฟล์ภาพ (PNG, JPG ฯลฯ) ขนาดไม่เกิน 8 MB</p>
+        </div>
+
+        <div class="space-y-3">
+          <label for="image_caption" class="block text-sm font-medium text-slate-700">คำบรรยายภาพ</label>
+          <input
+            type="text"
+            id="image_caption"
+            name="image_caption"
+            placeholder="เช่น ภาพบรรยากาศงานประชุมประจำเดือน"
+            value="<%= isEdit && article.imageCaption ? article.imageCaption : '' %>"
+            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+        </div>
+      </div>
+
+      <% if (isEdit && article.imagePath) { %>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <img
+              src="/<%= article.imagePath %>"
+              alt="<%= article.title %>"
+              class="h-32 w-full max-w-[9rem] rounded-lg object-cover shadow-sm"
+            />
+            <div class="flex-1 space-y-3 text-sm text-slate-600">
+              <p class="font-semibold text-slate-700">ภาพหน้าปกปัจจุบัน</p>
+              <% if (article.imageCaption) { %>
+                <p class="text-xs italic text-slate-500">“<%= article.imageCaption %>”</p>
+              <% } %>
+              <label class="inline-flex items-center gap-2 text-xs text-rose-600">
+                <input type="checkbox" name="removeImage" value="true" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500" />
+                ลบภาพนี้ออกจากข่าว
+              </label>
+            </div>
+          </div>
+        </div>
+      <% } %>
+
+      <div class="space-y-3">
+        <label for="attachments" class="block text-sm font-medium text-slate-700">ไฟล์แนบ (เลือกได้หลายไฟล์)</label>
+        <input
+          type="file"
+          id="attachments"
+          name="attachments"
+          multiple
+          class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm shadow-sm focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200 file:mr-4 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-slate-600 hover:file:bg-slate-200"
+        />
+        <p class="text-xs text-slate-500">รองรับไฟล์สกุล PDF, DOCX, XLSX, ZIP, รูปภาพ ฯลฯ ขนาดไม่เกิน 50 MB ต่อไฟล์ (สูงสุด 10 ไฟล์ต่อครั้ง)</p>
+
+        <% if (isEdit && article.attachments && article.attachments.length) { %>
+          <div class="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
+            <p class="text-sm font-semibold text-slate-700">ไฟล์แนบปัจจุบัน (<%= article.attachments.length %>)</p>
+            <ul class="mt-3 space-y-3 text-sm text-slate-600">
+              <% article.attachments.forEach((file) => { %>
+                <% const sizeMB = file.fileSize ? (file.fileSize / (1024 * 1024)).toFixed(2) : '0.00'; %>
+                <li class="flex flex-col gap-2 rounded-xl bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+                  <div class="flex flex-1 flex-col gap-1">
+                    <a href="/<%= file.filePath %>" target="_blank" rel="noopener" class="font-medium text-primary-600 hover:text-primary-700">
+                      <%= file.originalName %>
+                    </a>
+                    <span class="text-xs text-slate-500"><%= sizeMB %> MB · อัปโหลดเมื่อ <%= new Date(file.createdAt).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' }) %></span>
+                  </div>
+                  <label class="inline-flex items-center gap-2 text-xs text-rose-600">
+                    <input type="checkbox" name="removeAttachments" value="<%= file.id %>" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500" />
+                    ลบไฟล์นี้
+                  </label>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-slate-50/80 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <label class="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
+          <input
+            type="checkbox"
+            name="is_published"
+            value="1"
+            class="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+            <%= isEdit ? (article.isPublished ? 'checked' : '') : 'checked' %>
+          />
+          เผยแพร่ข่าวนี้บนหน้าเว็บไซต์ทันที
+        </label>
+        <div class="flex flex-wrap gap-3">
+          <a
+            href="/admin/news"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+          >
+            ยกเลิก
+          </a>
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-primary-700"
+          >
+            <%= isEdit ? 'บันทึกการแก้ไข' : 'บันทึกข่าว' %>
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+</main>
+
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toolbarOptions = [
+      [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link'],
+      ['clean']
+    ];
+
+    const quill = new Quill('#editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: toolbarOptions
+      }
+    });
+
+    const initialContent = <%- JSON.stringify(existingContent || '') %>;
+    if (initialContent) {
+      quill.root.innerHTML = initialContent;
+    }
+
+    const form = document.getElementById('newsForm');
+    const contentInput = document.getElementById('contentInput');
+
+    form.addEventListener('submit', () => {
+      contentInput.value = quill.root.innerHTML.trim();
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>

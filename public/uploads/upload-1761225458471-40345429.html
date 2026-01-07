@@ -1,0 +1,290 @@
+<br />
+<b>Warning</b>:  Undefined variable $role in <b>C:\laragon\www\PJ\admin_report.php</b> on line <b>505</b><br />
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>รายงานระดับผู้บริหาร - งานแจ้งปัญหาสาธารณูปโภค</title>
+    <style>
+        @page {
+            margin: 15mm;
+            size: A4;
+        }
+        body {
+            font-family: "Sarabun", "Angsana New", "AngsanaUPC", "Tahoma", sans-serif;
+            font-size: 11px;
+            line-height: 1.3;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #dc3545;
+            padding-bottom: 10px;
+        }
+        .header h1 {
+            color: #dc3545;
+            margin: 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .header p {
+            margin: 5px 0 0 0;
+            color: #666;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .summary-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+        .summary-card h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #dc3545;
+        }
+        .summary-card p {
+            margin: 5px 0 0 0;
+            font-size: 10px;
+            color: #666;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #dc3545;
+            color: white;
+            font-weight: bold;
+        }
+        .status-badge {
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+        .status-wait { background-color: #fff7ed; color: #c2410c; }
+        .status-doing { background-color: #e0f2fe; color: #0369a1; }
+        .status-done { background-color: #dcfce7; color: #166534; }
+        .footer {
+            margin-top: 30px;
+            border-top: 2px solid #dc3545;
+            padding-top: 15px;
+        }
+        .footer .signature {
+            text-align: right;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        .chart-placeholder {
+            border: 1px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body><div class="header">
+        <h1>รายงานระดับผู้บริหาร - งานแจ้งปัญหาสาธารณูปโภค</h1>
+        <p>รายงานระดับผู้บริหาร - ช่วงวันที่: 2025-09-01 ถึง 2025-09-20</p>
+        <p>พิมพ์เมื่อ: 20/09/2025 14:39 | ผู้สร้างรายงาน: ระบบ ผู้ดูแล</p>
+    </div><div class="summary-grid">
+        <div class="summary-card">
+            <h3>7</h3>
+            <p>งานทั้งหมด</p>
+        </div>
+        <div class="summary-card">
+            <h3>5</h3>
+            <p>รอรับเรื่อง</p>
+        </div>
+        <div class="summary-card">
+            <h3>0</h3>
+            <p>กำลังดำเนินการ</p>
+        </div>
+        <div class="summary-card">
+            <h3>2</h3>
+            <p>เสร็จสิ้น</p>
+        </div>
+    </div><h2>ประสิทธิภาพการทำงานของช่าง</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ช่าง</th>
+                    <th>ตำแหน่ง</th>
+                    <th>งานทั้งหมด</th>
+                    <th>รอรับเรื่อง</th>
+                    <th>กำลังดำเนินการ</th>
+                    <th>เสร็จสิ้น</th>
+                    <th>เวลาประมวลผลเฉลี่ย (วัน)</th>
+                </tr>
+            </thead>
+            <tbody><tr>
+                <td>(ยังไม่มอบหมาย)</td>
+                <td>(ยังไม่ระบุตำแหน่ง)</td>
+                <td>3</td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+            </tr><tr>
+                <td>นายช่า1ไฟฟ้า test1</td>
+                <td>ช่างไฟฟ้า</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0.5</td>
+            </tr><tr>
+                <td>นายช่างถนน test3</td>
+                <td>ช่างถนน</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+            </tr><tr>
+                <td>นายช่างประปา test2</td>
+                <td>ช่างประปา</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+            </tr></tbody></table><div class="page-break"></div>
+        <h2>การวิเคราะห์ตามหมวดปัญหา</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>หมวดปัญหา</th>
+                    <th>งานทั้งหมด</th>
+                    <th>รอรับเรื่อง</th>
+                    <th>กำลังดำเนินการ</th>
+                    <th>เสร็จสิ้น</th>
+                    <th>เวลาประมวลผลเฉลี่ย (วัน)</th>
+                </tr>
+            </thead>
+            <tbody><tr>
+                <td>ไฟฟ้า</td>
+                <td>5</td>
+                <td>3</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0.5</td>
+            </tr><tr>
+                <td>ประปา</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+            </tr></tbody></table><h2>การวิเคราะห์เวลาตอบสนอง</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ช่วงเวลาตอบสนอง</th>
+                    <th>จำนวนงาน</th>
+                    <th>เปอร์เซ็นต์</th>
+                </tr>
+            </thead>
+            <tbody></tbody></table><div class="page-break"></div>
+        <h2>รายการงานทั้งหมด (7 รายการ)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>รหัสติดตาม</th>
+                    <th>ผู้แจ้ง</th>
+                    <th>หมวด/หัวข้อ</th>
+                    <th>ช่าง/ตำแหน่ง</th>
+                    <th>สถานะ</th>
+                    <th>วันที่แจ้ง</th>
+                    <th>วันครบกำหนด</th>
+                </tr>
+            </thead>
+            <tbody><tr>
+                <td>17</td>
+                <td>UEBKNSJ7</td>
+                <td>หกดหกด กหดกหดหกด<br><small>0800000000</small></td>
+                <td>ประปา<br><small>ท่อน้ำแตก</small></td>
+                <td>(ยังไม่มอบหมาย)<br><small>(ยังไม่ระบุตำแหน่ง)</small></td>
+                <td><span class="status-badge status-wait">รอรับเรื่อง</span></td>
+                <td>2025-09-20 11:55:15</td>
+                <td>-</td>
+            </tr><tr>
+                <td>16</td>
+                <td>2MKSU36D</td>
+                <td>ผปแผปแ ผปแผปแผปแ<br><small>0800000000</small></td>
+                <td>ประปา<br><small>ท่อน้ำแตก</small></td>
+                <td>นายช่างประปา test2<br><small>ช่างประปา</small></td>
+                <td><span class="status-badge status-wait">รอรับเรื่อง</span></td>
+                <td>2025-09-20 10:51:49</td>
+                <td>-</td>
+            </tr><tr>
+                <td>15</td>
+                <td>WE4QY5P3</td>
+                <td>0000000 000000000000<br><small>0000000000</small></td>
+                <td>ไฟฟ้า<br><small>ไฟตก/ไฟดับ</small></td>
+                <td>(ยังไม่มอบหมาย)<br><small>(ยังไม่ระบุตำแหน่ง)</small></td>
+                <td><span class="status-badge status-wait">รอรับเรื่อง</span></td>
+                <td>2025-09-19 23:39:18</td>
+                <td>-</td>
+            </tr><tr>
+                <td>14</td>
+                <td>K94LVHLJ</td>
+                <td>ฟหฟหกฟห ฟหกกหฟ<br><small>0000000000</small></td>
+                <td>ไฟฟ้า<br><small>ไฟตก/ไฟดับ</small></td>
+                <td>(ยังไม่มอบหมาย)<br><small>(ยังไม่ระบุตำแหน่ง)</small></td>
+                <td><span class="status-badge status-wait">รอรับเรื่อง</span></td>
+                <td>2025-09-19 23:38:30</td>
+                <td>-</td>
+            </tr><tr>
+                <td>13</td>
+                <td>45XPAHCY</td>
+                <td>ฟหกฟหกฟหกฟหกฟหกฟหก ฟหกกหฟฟหก<br><small>0800000000</small></td>
+                <td>ไฟฟ้า<br><small>สายไฟขาด</small></td>
+                <td>นายช่างถนน test3<br><small>ช่างถนน</small></td>
+                <td><span class="status-badge status-wait">รอรับเรื่อง</span></td>
+                <td>2025-09-19 23:37:44</td>
+                <td>-</td>
+            </tr><tr>
+                <td>12</td>
+                <td>FL8M7MSU</td>
+                <td>5769 7867878<br><small>0800000000</small></td>
+                <td>ไฟฟ้า<br><small>สายไฟขาด</small></td>
+                <td>นายช่า1ไฟฟ้า test1<br><small>ช่างไฟฟ้า</small></td>
+                <td><span class="status-badge status-done">ดำเนินการเสร็จสิ้น</span></td>
+                <td>2025-09-19 23:24:39</td>
+                <td>1 วัน</td>
+            </tr><tr>
+                <td>11</td>
+                <td>CPZDMSHK</td>
+                <td>45546456 456546<br><small>0800000000</small></td>
+                <td>ไฟฟ้า<br><small>ไฟตก/ไฟดับ</small></td>
+                <td>นายช่า1ไฟฟ้า test1<br><small>ช่างไฟฟ้า</small></td>
+                <td><span class="status-badge status-done">ดำเนินการเสร็จสิ้น</span></td>
+                <td>2025-09-19 23:20:52</td>
+                <td>-</td>
+            </tr></tbody></table><div class="footer">
+        <div class="signature">
+            <p>ลงชื่อ................................................. ผู้อำนวยการกอง</p>
+            <p>(ระบบ ผู้ดูแล)</p>
+            <p>วันที่: 20/09/2025</p>
+        </div>
+    </div></body></html>

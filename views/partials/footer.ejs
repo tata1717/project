@@ -1,0 +1,191 @@
+      <% const siteName = (typeof site === 'object' && site?.siteName) ? site.siteName : 'ระบบจัดการสมาชิก'; %>
+    </div>
+
+    <div
+      id="confirm-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 px-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-modal-title"
+    >
+      <div class="w-full max-w-md rounded-3xl bg-white shadow-2xl ring-1 ring-black/5">
+        <div class="space-y-4 px-6 py-6 sm:px-8 sm:py-7">
+          <div class="flex items-start gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 3h.01M12 5a7 7 0 1 0 0 14 7 7 0 0 0 0-14Z" />
+              </svg>
+            </div>
+            <div class="space-y-1">
+              <h2 id="confirm-modal-title" class="text-base font-semibold text-slate-800">ยืนยันการดำเนินการ</h2>
+              <p id="confirm-modal-message" class="text-sm text-slate-600">คุณต้องการดำเนินการต่อหรือไม่?</p>
+            </div>
+          </div>
+          <div class="flex justify-end gap-3">
+            <button type="button" class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100" data-confirm-cancel>
+              ยกเลิก
+            </button>
+            <button type="button" class="rounded-xl bg-rose-500 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-600" data-confirm-accept>
+              ยืนยัน
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (() => {
+        const alertCloseButtons = document.querySelectorAll('[data-alert-close]');
+        alertCloseButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const wrapper = btn.closest('[data-alert="true"]');
+            if (wrapper) {
+              wrapper.classList.add('opacity-0', 'translate-y-1');
+              setTimeout(() => wrapper.remove(), 150);
+            }
+          });
+        });
+
+        const modal = document.getElementById('confirm-modal');
+        if (!modal) return;
+
+        const messageEl = modal.querySelector('#confirm-modal-message');
+        const cancelBtn = modal.querySelector('[data-confirm-cancel]');
+        const acceptBtn = modal.querySelector('[data-confirm-accept]');
+        let formToSubmit = null;
+        let restoreFocus = null;
+
+        const hideModal = () => {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          if (restoreFocus) {
+            restoreFocus.focus();
+          }
+          formToSubmit = null;
+        };
+
+        cancelBtn?.addEventListener('click', hideModal);
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            hideModal();
+          }
+        });
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+            hideModal();
+          }
+        });
+
+        acceptBtn?.addEventListener('click', () => {
+          if (formToSubmit) {
+            const targetForm = formToSubmit;
+            const submitter = targetForm.dataset.confirmSubmitter;
+            hideModal();
+            if (submitter) {
+              const button = targetForm.querySelector(`[data-confirm-trigger="${submitter}"]`);
+              if (button) {
+                button.setAttribute('data-confirmed', 'true');
+              }
+            }
+            targetForm.submit();
+          }
+        });
+
+        document.querySelectorAll('[data-confirm-message]').forEach((button, index) => {
+          const form = button.closest('form');
+          if (!form) return;
+
+          const triggerId = `confirm-trigger-${index}`;
+          button.setAttribute('data-confirm-trigger', triggerId);
+
+          button.addEventListener('click', (event) => {
+            if (button.getAttribute('data-confirmed') === 'true') {
+              button.removeAttribute('data-confirmed');
+              return;
+            }
+            event.preventDefault();
+            formToSubmit = form;
+            formToSubmit.dataset.confirmSubmitter = triggerId;
+            restoreFocus = button;
+            messageEl.textContent = button.getAttribute('data-confirm-message') || 'คุณต้องการดำเนินการต่อหรือไม่?';
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            acceptBtn?.focus();
+          });
+        });
+      })();
+
+      // PWA Service Worker Registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('Service Worker registered successfully:', registration.scope);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (newWorker) {
+                  newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                      // New service worker available
+                      console.log('New service worker available');
+                      if (confirm('มีเวอร์ชันใหม่ของแอป คุณต้องการอัปเดตหรือไม่?')) {
+                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                        window.location.reload();
+                      }
+                    }
+                  });
+                }
+              });
+            })
+            .catch((error) => {
+              console.error('Service Worker registration failed:', error);
+            });
+
+          // Listen for service worker controller changes
+          let refreshing = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+              refreshing = true;
+              window.location.reload();
+            }
+          });
+        });
+      }
+
+      // PWA Install Prompt
+      let deferredPrompt;
+      const installButton = document.getElementById('pwa-install-button');
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Show install button if it exists
+        if (installButton) {
+          installButton.style.display = 'block';
+          installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+              deferredPrompt.prompt();
+              const { outcome } = await deferredPrompt.userChoice;
+              console.log(`User response to install prompt: ${outcome}`);
+              deferredPrompt = null;
+              if (installButton) {
+                installButton.style.display = 'none';
+              }
+            }
+          });
+        }
+      });
+
+      window.addEventListener('appinstalled', () => {
+        console.log('PWA was installed');
+        deferredPrompt = null;
+        if (installButton) {
+          installButton.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>

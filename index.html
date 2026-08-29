@@ -1,1 +1,1193 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday นะคนเก่งของเค้า 💖</title>
+  
+  <!-- Google Fonts: Mali & Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Canvas Confetti CDN สำหรับเอฟเฟกต์พลุและหัวใจ -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mali: ['Mali', 'cursive', 'sans-serif'],
+            prompt: ['Prompt', 'sans-serif'],
+          },
+          colors: {
+            pastel: {
+              pink: '#FFD1DC',
+              rose: '#FFE4E8',
+              cream: '#FFF9F5',
+              peach: '#FFE5D9',
+              yellow: '#FFF3B0',
+              purple: '#E8DFF5',
+              blue: '#D0F4DE',
+              dark: '#4A3B40',
+              coral: '#FF8FAB',
+              hotpink: '#FF6584'
+            }
+          },
+          animation: {
+            'float': 'float 4s ease-in-out infinite',
+            'float-slow': 'float 6s ease-in-out infinite',
+            'flicker': 'flicker 1s ease-in-out infinite alternate',
+            'spin-slow': 'spin 8s linear infinite',
+            'pulse-soft': 'pulseSoft 2s infinite',
+            'bounce-soft': 'bounceSoft 2s infinite',
+            'wiggle': 'wiggle 1s ease-in-out infinite',
+            'sparkle': 'sparkle 1.5s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            flicker: {
+              '0%': { transform: 'scale(1) rotate(-1deg)', opacity: '0.9' },
+              '50%': { transform: 'scale(1.12, 0.92) rotate(2deg)', opacity: '1' },
+              '100%': { transform: 'scale(0.92, 1.08) rotate(-2deg)', opacity: '0.85' },
+            },
+            pulseSoft: {
+              '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+              '50%': { transform: 'scale(1.05)', opacity: '0.9' },
+            },
+            bounceSoft: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-6px)' },
+            },
+            wiggle: {
+              '0%, 100%': { transform: 'rotate(-4deg)' },
+              '50%': { transform: 'rotate(4deg)' },
+            },
+            sparkle: {
+              '0%, 100%': { opacity: '0.3', transform: 'scale(0.8)' },
+              '50%': { opacity: '1', transform: 'scale(1.2)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Prevent text selection and bouncing */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      touch-action: pan-y;
+      user-select: none;
+    }
+
+    /* Floating background hearts */
+    .bg-heart {
+      position: absolute;
+      pointer-events: none;
+      animation: float-up linear infinite;
+    }
+
+    @keyframes float-up {
+      0% {
+        transform: translateY(105vh) scale(0.6) rotate(0deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.1) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Polaroid Card Tape effect */
+    .washi-tape {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 90px;
+      height: 22px;
+      background-color: rgba(255, 220, 230, 0.75);
+      border-left: 2px dashed rgba(255, 180, 195, 0.8);
+      border-right: 2px dashed rgba(255, 180, 195, 0.8);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+
+    /* Smoke Effect */
+    .smoke {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      background: rgba(180, 180, 180, 0.6);
+      border-radius: 50%;
+      animation: smokeRise 1.5s forwards ease-out;
+    }
+
+    @keyframes smokeRise {
+      0% {
+        opacity: 0.8;
+        transform: translate(-50%, 0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -40px) scale(3.5);
+      }
+    }
+
+    /* Slide Transition effects */
+    .slide-section {
+      transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    }
+    .slide-hidden-left {
+      opacity: 0;
+      transform: translateX(-30px);
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+    }
+    .slide-hidden-right {
+      opacity: 0;
+      transform: translateX(30px);
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+    }
+    .slide-active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      position: relative;
+    }
+
+    /* Soundwave bars animation */
+    .sound-bar {
+      animation: soundwave 1s ease-in-out infinite alternate;
+    }
+    .sound-bar:nth-child(2) { animation-delay: 0.2s; }
+    .sound-bar:nth-child(3) { animation-delay: 0.4s; }
+    .sound-bar:nth-child(4) { animation-delay: 0.1s; }
+
+    @keyframes soundwave {
+      0% { height: 4px; }
+      100% { height: 16px; }
+    }
+  </style>
+</head>
+
+<body class="font-prompt bg-gradient-to-b from-[#FFF5F7] via-[#FFF9F5] to-[#FCEEF2] text-pastel-dark h-full min-h-screen overflow-hidden flex flex-col justify-between relative">
+
+  <!-- ================================================================= -->
+  <!-- 🎵 Hidden YouTube IFrame Player (เล่นเพลงอัตโนมัติ) -->
+  <!-- ================================================================= -->
+  <div id="youtube-player" style="position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;"></div>
+
+  <!-- ================================================================= -->
+  <!-- 💖 Floating Background Particles (หัวใจลอยพื้นหลัง) -->
+  <!-- ================================================================= -->
+  <div id="floating-hearts-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0"></div>
+
+  <!-- ================================================================= -->
+  <!-- 🎁 ENTRANCE OVERLAY (หน้าต่างเปิดของขวัญ + ให้เพลงเล่นทันทีตามเงื่อนไข Browser) -->
+  <!-- ================================================================= -->
+  <div id="welcome-overlay" class="fixed inset-0 bg-gradient-to-b from-[#FFF0F3] via-[#FFF8F8] to-[#FFE4E8] z-50 flex flex-col items-center justify-center p-6 text-center transition-all duration-700">
+    
+    <div class="max-w-sm w-full space-y-6 animate-bounce-soft">
+      <!-- ไอคอนกล่องของขวัญหัวใจ -->
+      <div class="relative mx-auto w-32 h-32 bg-white rounded-3xl shadow-2xl flex items-center justify-center border-4 border-pink-200">
+        <span class="text-6xl animate-wiggle">🎁</span>
+        <div class="absolute -top-3 -right-3 text-3xl animate-bounce">💖</div>
+        <div class="absolute -bottom-2 -left-2 text-2xl animate-sparkle">✨</div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="inline-block px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-xs font-mali font-semibold">
+          For The Birthday Chubby ✨
+        </div>
+        <h1 class="font-mali text-2xl sm:text-3xl font-bold text-pink-600">
+          Happy Birthday นะเธอ 💖
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-500 font-prompt">
+          มีของขวัญชิ้นพิเศษซ่อนอยู่ข้างในนี้......<br>
+          (เปิดเสียงเพื่อความฟินน๊าาา 🎵)
+        </p>
+      </div>
+
+      <!-- ปุ่มแตะเพื่อเข้าสู่เว็บ & เริ่มเล่นเพลง -->
+      <button onclick="enterBirthdayWebsite()" class="w-full py-4 rounded-full bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-mali font-bold text-base shadow-lg shadow-pink-300/60 hover:shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 group">
+        <span>ลองจิ้มดู 🎁✨</span>
+        <i data-lucide="sparkles" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+      </button>
+
+      <p class="text-[11px] text-pink-400 font-mali">✨ จัดทำขึ้นพิเศษเพื่อเธอคนเดียวเท่านั้น ✨</p>
+    </div>
+
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- 🔝 TOP BAR: Header & Mini Music Controller & Step Tracker -->
+  <!-- ================================================================= -->
+  <header class="relative z-20 px-4 pt-3 pb-2 flex items-center justify-between max-w-lg mx-auto w-full">
+    
+    <!-- Step Tracker Indicators -->
+    <div class="flex items-center gap-1.5 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-pink-100 shadow-sm">
+      <span class="text-xs font-mali font-bold text-pink-600" id="step-counter-text">1/5</span>
+      <div class="flex gap-1" id="step-dots">
+        <span class="w-4 h-1.5 rounded-full bg-pink-500 transition-all"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-pink-200 transition-all"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-pink-200 transition-all"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-pink-200 transition-all"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-pink-200 transition-all"></span>
+      </div>
+    </div>
+
+    <!-- Music Player Badge & Controls (ควบคุมเพลง YouTube) -->
+    <div class="flex items-center gap-2">
+      <button id="music-toggle-btn" onclick="toggleMusic()" class="bg-white/90 backdrop-blur-md border border-pink-200 text-pink-500 px-3 py-1.5 rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-2 text-xs font-mali group">
+        <!-- Soundwave animation bars -->
+        <div id="soundwave-container" class="flex items-end gap-0.5 h-4">
+          <span class="w-0.5 bg-pink-500 rounded-full sound-bar"></span>
+          <span class="w-0.5 bg-pink-500 rounded-full sound-bar"></span>
+          <span class="w-0.5 bg-pink-500 rounded-full sound-bar"></span>
+          <span class="w-0.5 bg-pink-500 rounded-full sound-bar"></span>
+        </div>
+        <span id="music-btn-text" class="text-[11px] font-medium truncate max-w-[90px]">เล่นเพลง 🎵</span>
+      </button>
+    </div>
+
+  </header>
+
+  <!-- ================================================================= -->
+  <!-- 📱 MAIN SLIDES CONTAINER (สไลด์ทีละช่วง) -->
+  <!-- ================================================================= -->
+  <main class="relative flex-1 w-full max-w-md mx-auto flex flex-col justify-center px-4 py-2 z-10 overflow-y-auto overflow-x-hidden">
+
+    <!-- ============================================================= -->
+    <!-- 🎂 SLIDE 1: จุดเทียน & เป่าเค้กวันเกิด (Interactive Candle & Cake) -->
+    <!-- ============================================================= -->
+    <div id="slide-1" class="slide-section slide-active flex flex-col items-center justify-center text-center space-y-4 my-auto">
+      
+      <!-- ข้อความหัวเรื่อง -->
+      <div class="space-y-1">
+        <div class="inline-flex items-center gap-1 px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-[11px] font-mali font-semibold">
+          <span>✨ วันเกิดทั้งที ต้องมีเค้ก!</span>
+        </div>
+        <h2 id="slide1-title" class="font-mali text-2xl sm:text-3xl font-bold text-pink-600">
+          จุดเทียนวันเกิดกันเถอะ 🕯️
+        </h2>
+        <p id="slide1-subtitle" class="text-xs sm:text-sm text-gray-500 font-prompt">
+           แตะที่ก้านเทียนเพื่อ <span class="text-pink-500 font-semibold underline decoration-pink-300">"จุดไฟเทียน"</span> ก่อนนะ ✨
+        </p>
+      </div>
+
+      <!-- เค้กวันเกิดและเทียนแบบ Interactive -->
+      <div class="relative py-6 flex flex-col items-center justify-center">
+        
+        <div class="relative flex flex-col items-center cursor-pointer" onclick="handleCakeInteraction()" id="interactive-cake">
+          
+          <!-- ก้านเทียน & เปลวไฟ -->
+          <div class="relative mb-0 flex flex-col items-center">
+            
+            <!-- เปลวไฟอนิเมชั่น (เริ่มแรกยังไม่จุดไฟ) -->
+            <div id="candle-flame" class="relative group/flame transition-all duration-500 hidden opacity-0 scale-50">
+              <div class="w-7 h-10 bg-gradient-to-t from-orange-500 via-amber-300 to-yellow-100 rounded-full animate-flicker filter drop-shadow-[0_0_15px_rgba(251,191,36,0.9)]"></div>
+              <!-- แสงเรืองรองรอบๆ -->
+              <div class="absolute inset-0 -m-3 bg-amber-300/40 rounded-full blur-lg animate-pulse"></div>
+            </div>
+
+            <!-- ควันหลังเป่าดับ -->
+            <div id="candle-smoke" class="hidden">
+              <div class="smoke"></div>
+            </div>
+
+            <!-- ไส้เทียนและก้านเทียน -->
+            <div class="relative flex flex-col items-center">
+              <!-- ไส้เทียนดำ -->
+              <div class="w-1 h-2.5 bg-gray-700 rounded-t-sm" id="candle-wick"></div>
+              <!-- ก้านเทียนลายเกลียวหวานแหวว -->
+              <div class="w-4 h-12 bg-gradient-to-b from-pink-300 via-white to-pink-300 rounded-t-sm shadow-sm relative overflow-hidden border border-pink-200">
+                <div class="absolute inset-0 opacity-50 bg-[repeating-linear-gradient(45deg,#ff8fab,#ff8fab_3px,transparent_3px,transparent_6px)]"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ตัวเค้ก ชั้นบน (Top Tier) -->
+          <div class="w-36 h-14 bg-gradient-to-r from-rose-200 via-pink-100 to-rose-200 rounded-t-2xl relative shadow-md flex items-center justify-center border-b border-pink-200">
+            <!-- ครีมหยดสีขาว -->
+            <div class="absolute -top-1 inset-x-0 flex justify-around">
+              <span class="w-4 h-3 bg-white rounded-b-full shadow-xs"></span>
+              <span class="w-5 h-4.5 bg-white rounded-b-full shadow-xs"></span>
+              <span class="w-4 h-3.5 bg-white rounded-b-full shadow-xs"></span>
+              <span class="w-5 h-4 bg-white rounded-b-full shadow-xs"></span>
+              <span class="w-4 h-3 bg-white rounded-b-full shadow-xs"></span>
+            </div>
+            <!-- สตรอว์เบอร์รี -->
+            <div class="text-xl -mt-1.5 flex gap-1">
+              <span class="animate-bounce-soft">🍓</span>
+              <span class="animate-bounce-soft" style="animation-delay: 0.2s">🍓</span>
+              <span class="animate-bounce-soft" style="animation-delay: 0.4s">🍓</span>
+            </div>
+          </div>
+
+          <!-- ตัวเค้ก ชั้นล่าง (Bottom Tier) -->
+          <div class="w-52 h-16 bg-gradient-to-r from-pink-200 via-rose-100 to-pink-200 rounded-t-2xl relative shadow-lg flex flex-col items-center justify-center border-t border-white/60">
+            <div class="flex gap-2 text-xs">
+              <span>🌸</span>
+              <span>✨</span>
+              <span class="font-mali font-bold text-pink-500">HAPPY BIRTHDAY</span>
+              <span>✨</span>
+              <span>🌸</span>
+            </div>
+          </div>
+
+          <!-- จานรองเค้ก -->
+          <div class="w-64 h-3.5 bg-white rounded-full shadow-md border border-pink-100 -mt-1"></div>
+        </div>
+
+        <!-- ปุ่มคำแนะนำการเล่นแบบ Interactive -->
+        <div id="cake-interactive-btn" class="mt-4">
+          <button onclick="handleCakeInteraction()" class="px-5 py-2 rounded-full bg-white/90 border-2 border-pink-300 text-pink-600 text-xs font-mali font-bold shadow-sm animate-bounce flex items-center gap-1.5 mx-auto">
+            <span id="cake-btn-icon">🔥</span>
+            <span id="cake-btn-text">แตะที่นี่เพื่อจุดไฟเทียน 🕯️</span>
+          </button>
+        </div>
+
+        <!-- ปุ่มสำหรับไปสไลด์ถัดไป (แสดงหลังเป่าเทียนดับแล้ว) -->
+        <div id="slide1-next-container" class="hidden mt-4 animate-bounce-soft">
+          <button onclick="goToSlide(2)" class="px-6 py-3 rounded-full bg-gradient-to-r from-pink-400 to-rose-400 text-white font-mali font-bold text-sm shadow-lg shadow-pink-300/60 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 mx-auto">
+            <span>จิ้มต่อเลยเธอ.... 💌</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ============================================================= -->
+    <!-- 💌 SLIDE 2: จดหมายความในใจ (Secret Love Letter) -->
+    <!-- ============================================================= -->
+    <div id="slide-2" class="slide-section slide-hidden-right flex flex-col items-center justify-center text-center space-y-4 my-auto">
+      
+      <div class="space-y-1">
+        <div class="inline-flex items-center gap-1 px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-[11px] font-mali font-semibold">
+          <span>💌 ความในใจถึงเธอ</span>
+        </div>
+        <h2 class="font-mali text-2xl sm:text-3xl font-bold text-pink-600">
+          สุขสันต์วันเกิดนะที่รัก 🎂💖
+        </h2>
+      </div>
+
+      <!-- การ์ดจดหมายรัก -->
+      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-xl border-2 border-pink-200 relative overflow-hidden text-left w-full space-y-3">
+        
+        <div class="absolute -top-6 -right-6 w-20 h-20 bg-pink-100 rounded-full pointer-events-none"></div>
+        <div class="absolute top-3 right-4 text-2xl">💌</div>
+
+        <div class="inline-block px-2.5 py-0.5 bg-pink-50 text-pink-500 rounded-full text-[11px] font-mali font-semibold">
+          To: คนเก่งที่น่ารักที่สุดในโลก
+        </div>
+
+        <div class="text-xs sm:text-sm text-gray-600 font-prompt leading-relaxed space-y-2 max-h-56 overflow-y-auto pr-1">
+          <p>
+            ขอบคุณที่เข้ามาเป็นความสุข เป็นรอยยิ้ม และเป็นเรื่องราวที่ดีที่สุดในทุกๆ วันของเค้านะครับ 💕
+          </p>
+          <p>
+            วันเกิดปีนี้ ขอให้เธอมีแต่รอยยิ้ม ไม่ต้องเจอกับเรื่องเหนื่อยใจ ขอให้ทุกความฝันและความตั้งใจของเธอประสบความสำเร็จในเร็ววัน มีสุขภาพแข็งแรง และน่ารักแบบนี้ไปนานๆ เลยน้า
+          </p>
+          <p class="text-pink-500 font-medium pt-1">
+            ไม่ว่าจะเจออะไร เค้าจะคอยอยู่ข้างๆ คอยกอด และคอยซัพพอร์ตเธอเสมอครับ รักเธอมากๆ น้า 🥰✨
+          </p>
+        </div>
+
+        <div class="pt-3 border-t border-pink-100 flex justify-between items-center text-[11px] text-gray-400 font-mali">
+          <span>จาก: แฟนคนนี้เอง 💖</span>
+          <span class="text-pink-400 font-medium">Forever & Always</span>
+        </div>
+      </div>
+
+      <!-- ปุ่มไปสไลด์ถัดไป -->
+      <div class="pt-2 w-full">
+        <button onclick="goToSlide(3)" class="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-400 to-rose-400 text-white font-mali font-bold text-sm shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span>จิ้มปุ่มนี้เธอ... 📸</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- ============================================================= -->
+    <!-- 📸 SLIDE 3: การ์ดความทรงจำ (Memory Carousel) -->
+    <!-- ============================================================= -->
+    <div id="slide-3" class="slide-section slide-hidden-right flex flex-col items-center justify-center text-center space-y-3 my-auto">
+      
+      <div class="space-y-0.5">
+        <div class="inline-flex items-center gap-1 px-3 py-1 bg-rose-100 text-rose-600 rounded-full text-[11px] font-mali font-semibold">
+          <!-- <span>📸 ความทรงจำหวานๆ</span> -->
+        </div>
+        <h2 class="font-mali text-2xl font-bold text-pink-600">
+          Our Sweet Moments 🌸
+        </h2>
+      </div>
+
+      <!-- Polaroid Card -->
+      <div class="relative mx-auto w-full max-w-xs">
+        <div class="washi-tape"></div>
+
+        <div class="bg-white p-3.5 pt-5 pb-4 rounded-2xl shadow-xl border border-pink-100 text-center">
+          
+          <!-- รูปภาพ (เปลี่ยนได้ง่ายในตัวแปร memoryData) -->
+          <div class="relative w-full aspect-[3/4] max-h-72 rounded-xl overflow-hidden bg-pink-50 shadow-inner">
+            <img id="memory-img" 
+                 src="1.jpeg" 
+                 alt="สมัยเอ๊าะๆ" 
+                 class="w-full h-full object-cover object-center transition-opacity duration-300">
+            
+            <div class="absolute bottom-2 left-2 bg-black/40 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-[10px] text-white flex items-center gap-1 font-mali">
+              <i data-lucide="map-pin" class="w-2.5 h-2.5 text-pink-300"></i>
+              <span id="memory-tag">สมัยเอ๊าะๆ 🌸</span>
+            </div>
+          </div>
+
+          <!-- บรรยายภาพ -->
+          <div class="mt-2.5 space-y-1">
+            <h4 id="memory-title" class="font-mali text-sm sm:text-base font-bold text-gray-800">
+              สมัยเอ๊าะๆ
+            </h4>
+            <p id="memory-desc" class="text-[11px] sm:text-xs text-gray-500 font-prompt line-clamp-2">
+              น่ารักสดใสตั้งแต่สมัยนั้น จนถึงตอนนี้ก็ยังน่ารักที่สุดเสมอเลยยย ✨
+            </p>
+          </div>
+
+        </div>
+
+        <!-- ปุ่มเลื่อนรูปภาพในการ์ด -->
+        <div class="flex items-center justify-between absolute inset-y-1/2 -inset-x-3 pointer-events-none">
+          <button onclick="prevMemory()" class="pointer-events-auto w-8 h-8 rounded-full bg-white/90 shadow-md border border-pink-100 text-pink-500 hover:bg-pink-50 flex items-center justify-center transition-all">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          </button>
+          <button onclick="nextMemory()" class="pointer-events-auto w-8 h-8 rounded-full bg-white/90 shadow-md border border-pink-100 text-pink-500 hover:bg-pink-50 flex items-center justify-center transition-all">
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Dots Indicator -->
+        <div id="memory-dots" class="flex justify-center gap-1.5 mt-2"></div>
+      </div>
+
+      <!-- ปุ่มไปสไลด์ถัดไป -->
+      <div class="pt-2 w-full">
+        <button onclick="goToSlide(4)" class="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-400 to-rose-400 text-white font-mali font-bold text-sm shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span>ไปเลือกคูปองตามใจแฟน 🎟️</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- ============================================================= -->
+    <!-- 🎟️ SLIDE 4: คูปองตามใจแฟน (Reward Coupon Selection) -->
+    <!-- ============================================================= -->
+    <div id="slide-4" class="slide-section slide-hidden-right flex flex-col items-center justify-center text-center space-y-3 my-auto">
+      
+      <div class="space-y-0.5">
+        <div class="inline-flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-[11px] font-mali font-semibold">
+          <span>🎟️ คูปองวันเกิด</span>
+        </div>
+        <h2 class="font-mali text-xl sm:text-2xl font-bold text-pink-600">
+          🍴 วันเกิดปีนี้อยากกินอะไร เดี๋ยวเค้าเลี้ยง!
+        </h2>
+        <p class="text-[11px] sm:text-xs text-gray-500 font-prompt">
+          กดเลือกคูปองที่อยากได้เลย (ไม่มีวันหมดอายุ และฟรีทุกรายการ! 💖)
+        </p>
+      </div>
+
+      <!-- รายการคูปอง 4 ใบ -->
+      <div class="grid grid-cols-2 gap-2.5 text-left w-full pt-1">
+        
+        <!-- Option A: ชาบู -->
+        <button onclick="claimCoupon('shabu')" class="group p-3 rounded-2xl bg-white/95 border-2 border-pink-100 hover:border-pink-300 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-2xl group-hover:scale-110 transition-transform">🥩</span>
+            <span class="text-[9px] font-mali px-1.5 py-0.5 rounded bg-pink-100 text-pink-600 font-bold">Option A</span>
+          </div>
+          <div class="mt-2">
+            <h4 class="font-mali text-xs font-bold text-gray-800">ชาบู / หมูกระทะ</h4>
+            <p class="text-[10px] text-gray-400 font-prompt mt-0.5">กินไม่อั้น ไม่ต้องกลัวอ้วน</p>
+          </div>
+          <span class="text-[10px] text-pink-500 font-mali mt-2 font-semibold flex items-center gap-0.5">กดรับ 💖</span>
+        </button>
+
+        <!-- Option B: โอมากาเสะ -->
+        <button onclick="claimCoupon('omakase')" class="group p-3 rounded-2xl bg-white/95 border-2 border-pink-100 hover:border-pink-300 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-2xl group-hover:scale-110 transition-transform">🍣</span>
+            <span class="text-[9px] font-mali px-1.5 py-0.5 rounded bg-rose-100 text-rose-600 font-bold">Option B</span>
+          </div>
+          <div class="mt-2">
+            <h4 class="font-mali text-xs font-bold text-gray-800 leading-snug">
+              โอมากาเสะสุดหรู<br>
+              <span class="text-[10px] text-pink-500 font-medium">(ซอยจุ๊ ลาบขม ต้มแซ่บ)</span>
+            </h4>
+            <p class="text-[10px] text-gray-400 font-prompt mt-0.5">คอร์สพิเศษเพื่อคนพิเศษ 🥩🌶️</p>
+          </div>
+          <span class="text-[10px] text-pink-500 font-mali mt-2 font-semibold flex items-center gap-0.5">กดรับ 💖</span>
+        </button>
+
+        <!-- Option C: คาเฟ่ -->
+        <button onclick="claimCoupon('cafe')" class="group p-3 rounded-2xl bg-white/95 border-2 border-pink-100 hover:border-pink-300 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-2xl group-hover:scale-110 transition-transform">🍰</span>
+            <span class="text-[9px] font-mali px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 font-bold">Option C</span>
+          </div>
+          <div class="mt-2">
+            <h4 class="font-mali text-xs font-bold text-gray-800">คาเฟ่ & ชานม</h4>
+            <p class="text-[10px] text-gray-400 font-prompt mt-0.5">พร้อมถ่ายรูปให้ร้อยรูป</p>
+          </div>
+          <span class="text-[10px] text-pink-500 font-mali mt-2 font-semibold flex items-center gap-0.5">กดรับ 💖</span>
+        </button>
+
+        <!-- Option D: ตามใจแฟน -->
+        <button onclick="claimCoupon('any')" class="group p-3 rounded-2xl bg-white/95 border-2 border-pink-100 hover:border-pink-300 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-2xl group-hover:scale-110 transition-transform">🥰</span>
+            <span class="text-[9px] font-mali px-1.5 py-0.5 rounded bg-purple-100 text-purple-600 font-bold">Option D</span>
+          </div>
+          <div class="mt-2">
+            <h4 class="font-mali text-xs font-bold text-gray-800">ตามใจเธอทุกอย่าง</h4>
+            <p class="text-[10px] text-gray-400 font-prompt mt-0.5">วันนี้เธอคือหัวหน้า!</p>
+          </div>
+          <span class="text-[10px] text-pink-500 font-mali mt-2 font-semibold flex items-center gap-0.5">กดรับ 💖</span>
+        </button>
+
+      </div>
+
+      <!-- ปุ่มไปสไลด์สุดท้าย -->
+      <div class="pt-2 w-full">
+        <button onclick="goToSlide(5)" class="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-400 to-rose-400 text-white font-mali font-bold text-sm shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span>เลือกแล้วก็ จิ้มปุ่มนี้อีกเธอ... 🌸</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- ============================================================= -->
+    <!-- 🌸 SLIDE 5: บทสรุปความรัก (Final Sweet Closing) -->
+    <!-- ============================================================= -->
+    <div id="slide-5" class="slide-section slide-hidden-right flex flex-col items-center justify-center text-center space-y-4 my-auto">
+      
+      <!-- สติกเกอร์ฉลอง -->
+      <div class="relative">
+        <div class="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-pink-200 via-rose-100 to-amber-100 rounded-full flex items-center justify-center shadow-inner animate-float mx-auto">
+          <span class="text-5xl">👑💖</span>
+        </div>
+        <div class="absolute -top-1 -right-1 text-2xl animate-wiggle">🎉</div>
+        <div class="absolute -bottom-1 -left-1 text-2xl animate-sparkle">✨</div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-1 px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-[11px] font-mali font-semibold">
+          <span>🌸 You are my favorite person forever</span>
+        </div>
+        <h2 class="font-mali text-2xl sm:text-3xl font-bold text-pink-600">
+          รักเธอที่สุดในโลกเลยนะ 💕
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-600 font-prompt px-2 leading-relaxed">
+          ขอบคุณสำหรับทุกช่วงเวลาที่มีความสุขด้วยกัน<br>
+          ขอให้วันเกิดปีนี้เป็นปีที่ดีและสดใสที่สุดเลยนะที่รัก 🎂✨
+        </p>
+      </div>
+
+      <!-- ปุ่มกดเล่นอีกรอบ & ปุ่มยิงพลุ -->
+      <div class="w-full space-y-2 pt-2">
+        <button onclick="triggerBirthdayConfetti()" class="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-mali font-bold text-sm shadow-lg shadow-pink-300/60 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span>กดจุดพลุฉลองอีกรอบ! 🎉✨</span>
+        </button>
+
+        <button onclick="goToSlide(1)" class="w-full py-2.5 rounded-full bg-white border border-pink-200 text-pink-500 font-mali text-xs font-semibold hover:bg-pink-50 transition-all flex items-center justify-center gap-1.5">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+          <span>อยากดูอีกรอบ กดเล้ยยยย อิอิ</span>
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+
+
+
+
+  <!-- ================================================================= -->
+  <!-- 💌 POPUP MODAL: แสดงผลหลังกดรับคูปอง -->
+  <!-- ================================================================= -->
+  <div id="coupon-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300">
+    
+    <div class="bg-white rounded-3xl max-w-xs w-full p-5 text-center shadow-2xl border-2 border-pink-200 transform scale-90 transition-transform duration-300 relative" id="modal-card">
+      
+      <!-- ปุ่มปิด -->
+      <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 p-1 rounded-full bg-gray-100">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="w-14 h-14 bg-pink-100 text-pink-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
+        <span id="modal-emoji" class="text-3xl">🎉</span>
+      </div>
+
+      <div class="inline-block border-2 border-dashed border-pink-400 text-pink-500 px-2.5 py-0.5 rounded-md text-[10px] font-mali font-bold tracking-widest uppercase mb-1.5 rotate-[-3deg]">
+        ✓ CLAIMED & CONFIRMED
+      </div>
+
+      <h3 id="modal-title" class="font-mali text-base font-bold text-pink-600">
+        บันทึกคำขอแล้วนะ! 💖
+      </h3>
+
+      <div class="bg-pink-50/80 rounded-2xl p-3 my-3 text-left border border-pink-100">
+        <p id="modal-desc" class="text-xs text-gray-700 font-prompt leading-relaxed">
+          ดีลเลย! เย็นนี้เตรียมท้องไว้ได้เลยนะค้าบ เจ้ามือพร้อมเปย์เต็มที่ 🤫🥩
+        </p>
+        <div class="mt-2 pt-2 border-t border-pink-200/60 flex justify-between text-[10px] text-pink-400 font-mali">
+          <span>รหัสคูปอง: #HBD-LOVE-2026</span>
+          <span>สถานะ: อนุมัติแล้ว 💯</span>
+        </div>
+      </div>
+
+      <button onclick="copyOrNotify()" class="w-full py-2.5 rounded-full bg-gradient-to-r from-pink-400 to-rose-400 text-white font-mali font-semibold text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5">
+        <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+        <span>แคปหน้านี้ส่งให้เค้าในแชทเลย 📸</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-16 left-1/2 -translate-x-1/2 bg-gray-900/90 text-white px-4 py-2 rounded-full text-xs font-mali shadow-xl backdrop-blur-md z-50 hidden opacity-0 transition-opacity duration-300 flex items-center gap-1.5">
+    <span>✨ แคปหน้าจอแล้วส่งมาอวดในไลน์ได้เลยค้าบ!</span>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- 🪄 JAVASCRIPT LOGIC -->
+  <!-- ================================================================= -->
+  <script>
+    // ==========================================
+    // 1. YouTube IFrame Player Setup
+    // ==========================================
+    let ytPlayer = null;
+    let isMusicPlaying = false;
+    let hasUserInteracted = false;
+
+    // YouTube Video ID: 29-fw1FPx7E
+    const YOUTUBE_VIDEO_ID = '29-fw1FPx7E';
+
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('youtube-player', {
+        height: '100',
+        width: '100',
+        videoId: YOUTUBE_VIDEO_ID,
+        playerVars: {
+          'autoplay': 1,
+          'controls': 0,
+          'loop': 1,
+          'playlist': YOUTUBE_VIDEO_ID,
+          'playsinline': 1,
+          'enablejsapi': 1,
+          'origin': window.location.origin
+        },
+        events: {
+          'onReady': (event) => {
+            event.target.setVolume(85);
+          },
+          'onStateChange': (event) => {
+            if (event.data === YT.PlayerState.PLAYING) {
+              setMusicPlayingUI(true);
+            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+              setMusicPlayingUI(false);
+            }
+          }
+        }
+      });
+    }
+
+    function playYouTubeMusic() {
+      if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+        try {
+          ytPlayer.unMute();
+          ytPlayer.setVolume(85);
+          ytPlayer.playVideo();
+          setMusicPlayingUI(true);
+        } catch (e) {
+          console.log('Play error', e);
+        }
+      }
+    }
+
+    function toggleMusic() {
+      if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
+      
+      const state = ytPlayer.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) {
+        ytPlayer.pauseVideo();
+        setMusicPlayingUI(false);
+      } else {
+        ytPlayer.unMute();
+        ytPlayer.playVideo();
+        setMusicPlayingUI(true);
+      }
+    }
+
+    function setMusicPlayingUI(playing) {
+      isMusicPlaying = playing;
+      const wave = document.getElementById('soundwave-container');
+      const text = document.getElementById('music-btn-text');
+      
+      if (playing) {
+        wave.classList.remove('opacity-30');
+        wave.querySelectorAll('.sound-bar').forEach(b => b.style.animationPlayState = 'running');
+        text.innerText = 'กำลังเล่นเพลง 🎶';
+      } else {
+        wave.classList.add('opacity-30');
+        wave.querySelectorAll('.sound-bar').forEach(b => b.style.animationPlayState = 'paused');
+        text.innerText = 'เปิดเพลง 🎵';
+      }
+    }
+
+    // เมื่อกดปุ่ม "เปิดของขวัญ" ในหน้าแรก -> เพลงเริ่มดังทันที + ปิด Overlay
+    function enterBirthdayWebsite() {
+      hasUserInteracted = true;
+      playYouTubeMusic();
+
+      const overlay = document.getElementById('welcome-overlay');
+      overlay.classList.add('opacity-0', 'scale-105');
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+      }, 700);
+
+      // ยิง Confetti ต้อนรับ
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.5 },
+        colors: ['#FFD1DC', '#FFE4E8', '#FF8FAB']
+      });
+    }
+
+
+    // ==========================================
+    // 2. Slide Navigation System (สไลด์ไปทีละช่วง)
+    // ==========================================
+    let currentSlide = 1;
+    const totalSlides = 5;
+
+    const slideTitles = [
+      '1. จุดเทียนวันเกิด 🎂',
+      '2. จดหมายความในใจ 💌',
+      '3. ภาพความทรงจำ 📸',
+      '4. คูปองตามใจแฟน 🎟️',
+      '5. รักเธอนะ 🌸'
+    ];
+
+    function goToSlide(targetSlide) {
+      if (targetSlide < 1 || targetSlide > totalSlides || targetSlide === currentSlide) return;
+
+      const currentEl = document.getElementById(`slide-${currentSlide}`);
+      const targetEl = document.getElementById(`slide-${targetSlide}`);
+
+      // ทิศทางการสไลด์
+      const isNext = targetSlide > currentSlide;
+
+      currentEl.className = `slide-section ${isNext ? 'slide-hidden-left' : 'slide-hidden-right'}`;
+      targetEl.className = 'slide-section slide-active';
+
+      currentSlide = targetSlide;
+      updateSlideUI();
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        goToSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        goToSlide(currentSlide - 1);
+      }
+    }
+
+    function updateSlideUI() {
+      // อัปเดตตัวนับ
+      const stepCounter = document.getElementById('step-counter-text');
+      if (stepCounter) stepCounter.innerText = `${currentSlide}/${totalSlides}`;
+      
+      const slideNameTag = document.getElementById('slide-name-tag');
+      if (slideNameTag) slideNameTag.innerText = slideTitles[currentSlide - 1];
+
+      // อัปเดต Dots
+      const stepDotsContainer = document.getElementById('step-dots');
+      if (stepDotsContainer) {
+        const dots = stepDotsContainer.children;
+        for (let i = 0; i < dots.length; i++) {
+          if (i === currentSlide - 1) {
+            dots[i].className = 'w-4 h-1.5 rounded-full bg-pink-500 transition-all';
+          } else {
+            dots[i].className = 'w-1.5 h-1.5 rounded-full bg-pink-200 transition-all';
+          }
+        }
+      }
+
+      // ซ่อน/แสดงปุ่มก่อนหน้า-ถัดไป (ถ้ามี)
+      const prevBtn = document.getElementById('prev-slide-btn');
+      const nextBtn = document.getElementById('next-slide-btn');
+
+      if (prevBtn) {
+        if (currentSlide === 1) {
+          prevBtn.classList.add('opacity-0', 'pointer-events-none');
+        } else {
+          prevBtn.classList.remove('opacity-0', 'pointer-events-none');
+        }
+      }
+
+      if (nextBtn) {
+        if (currentSlide === totalSlides) {
+          nextBtn.classList.add('opacity-0', 'pointer-events-none');
+        } else {
+          nextBtn.classList.remove('opacity-0', 'pointer-events-none');
+        }
+      }
+    }
+
+
+    // ==========================================
+    // 3. Slide 1 Interactive Cake: จุดเทียน -> เป่าเทียน
+    // ==========================================
+    let candleState = 'unlit'; // 'unlit' -> 'lit' -> 'blown'
+
+    function handleCakeInteraction() {
+      const flame = document.getElementById('candle-flame');
+      const smoke = document.getElementById('candle-smoke');
+      const title = document.getElementById('slide1-title');
+      const subtitle = document.getElementById('slide1-subtitle');
+      const btnIcon = document.getElementById('cake-btn-icon');
+      const btnText = document.getElementById('cake-btn-text');
+      const nextContainer = document.getElementById('slide1-next-container');
+      const interactiveBtn = document.getElementById('cake-interactive-btn');
+
+      if (candleState === 'unlit') {
+        // จุดเทียน 🔥
+        candleState = 'lit';
+        flame.classList.remove('hidden');
+        setTimeout(() => {
+          flame.classList.remove('opacity-0', 'scale-50');
+          flame.classList.add('opacity-100', 'scale-100');
+        }, 50);
+
+        title.innerText = 'อธิษฐานแล้วเป่าเทียนเลย! 🎂';
+        subtitle.innerHTML = 'หลับตาขอพร แล้วแตะที่ <span class="text-pink-500 font-semibold underline decoration-pink-300">"เปลวไฟ"</span> เพื่อเป่าดับนะ!';
+        btnIcon.innerText = '💨';
+        btnText.innerText = 'แตะที่นี่เพื่อเป่าเทียนอธิษฐาน 🎂';
+
+        // เอฟเฟกต์ประกายไฟเล็กๆ
+        confetti({
+          particleCount: 25,
+          spread: 40,
+          origin: { y: 0.45 },
+          colors: ['#FFD1DC', '#FFF3B0', '#FF8FAB']
+        });
+
+      } else if (candleState === 'lit') {
+        // เป่าเทียนดับ 💨
+        candleState = 'blown';
+        flame.classList.add('opacity-0', 'scale-50');
+        setTimeout(() => {
+          flame.classList.add('hidden');
+          smoke.classList.remove('hidden');
+        }, 300);
+
+        title.innerHTML = 'เย้! เป่าเทียนสำเร็จแล้ว 🎉';
+        subtitle.innerText = 'ขอให้คำอธิษฐานของเธอเป็นจริงในเร็ววันน้า ✨';
+
+        interactiveBtn.classList.add('hidden');
+        nextContainer.classList.remove('hidden');
+
+        // ยิง Confetti หัวใจพาสเทลชุดใหญ่
+        triggerBirthdayConfetti();
+      }
+    }
+
+    function triggerBirthdayConfetti() {
+      const count = 180;
+      const defaults = { origin: { y: 0.6 } };
+
+      function fire(particleRatio, opts) {
+        confetti(Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio)
+        }));
+      }
+
+      fire(0.25, { spread: 30, startVelocity: 55, colors: ['#FFD1DC', '#FFE4E8', '#FF8FAB'] });
+      fire(0.2, { spread: 60, colors: ['#FFF3B0', '#E8DFF5', '#FFC6FF'] });
+      fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#FF8FAB', '#FFB5C5', '#FFD6A5'] });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2, colors: ['#FFB5C5', '#CAFFBF', '#9BF6FF'] });
+    }
+
+
+    // ==========================================
+    // 4. Slide 3: Memory Carousel Logic
+    // ==========================================
+    const memoryData = [
+      {
+        image: '1.jpeg',
+        tag: 'สมัยเอ๊าะๆ 🌸',
+        title: 'สมัยเอ๊าะๆ',
+        desc: 'น่ารักสดใสตั้งแต่สมัยนั้น จนถึงตอนนี้ก็ยังน่ารักที่สุดเสมอเลยยย ✨'
+      },
+      {
+        image: '2.JPEG',
+        tag: 'เค้าสวยมั้ยยย ✨',
+        title: 'เค้าสวยมั้ยยย',
+        desc: 'สวยที่สุดในโลกกกก ไม่ว่าจะมองมุมไหนก็น่ารักไปหมดเลยยย 🥰'
+      },
+      {
+        image: '3.JPEG',
+        tag: 'คนสวยยยน่ารักกกกก 🌷',
+        title: 'รูปคนสวยยยน่ารักกกกก',
+        desc: 'มองทีไรก็ใจละลาย น่ารักจนหยุดยิ้มไม่ได้เลยนะเนี่ยยย 💖'
+      },
+      {
+        image: '4.JPEG',
+        tag: 'เท่จัดแฟนเค้าาา 😎',
+        title: 'เท่จัดแฟนเค้าาา',
+        desc: 'ทั้งเท่ ทั้งน่ารัก แฟนใครเนี่ย ทำไมดูดีขนาดนี้เนี่ยยยย 💕'
+      }
+    ];
+
+    let currentMemoryIndex = 0;
+
+    function initMemoryCarousel() {
+      renderMemoryCard(0);
+      renderMemoryDots();
+    }
+
+    function renderMemoryCard(index) {
+      const data = memoryData[index];
+      const img = document.getElementById('memory-img');
+      const tag = document.getElementById('memory-tag');
+      const title = document.getElementById('memory-title');
+      const desc = document.getElementById('memory-desc');
+      const date = document.getElementById('memory-date');
+
+      if (img) img.classList.add('opacity-40');
+      setTimeout(() => {
+        if (img) {
+          img.src = data.image;
+          img.alt = data.title;
+          img.classList.remove('opacity-40');
+        }
+        if (tag) tag.innerText = data.tag;
+        if (title) title.innerText = data.title;
+        if (desc) desc.innerText = data.desc;
+        if (date && data.date) date.innerText = data.date;
+      }, 150);
+
+      updateMemoryDots(index);
+    }
+
+    function renderMemoryDots() {
+      const dotsContainer = document.getElementById('memory-dots');
+      dotsContainer.innerHTML = '';
+      memoryData.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${idx === currentMemoryIndex ? 'bg-pink-500 w-5' : 'bg-pink-200'}`;
+        dot.onclick = () => {
+          currentMemoryIndex = idx;
+          renderMemoryCard(idx);
+        };
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function updateMemoryDots(activeIndex) {
+      const dots = document.getElementById('memory-dots').children;
+      for (let i = 0; i < dots.length; i++) {
+        if (i === activeIndex) {
+          dots[i].className = 'w-5 h-2 rounded-full bg-pink-500 transition-all duration-300';
+        } else {
+          dots[i].className = 'w-2 h-2 rounded-full bg-pink-200 transition-all duration-300';
+        }
+      }
+    }
+
+    function prevMemory() {
+      currentMemoryIndex = (currentMemoryIndex - 1 + memoryData.length) % memoryData.length;
+      renderMemoryCard(currentMemoryIndex);
+    }
+
+    function nextMemory() {
+      currentMemoryIndex = (currentMemoryIndex + 1) % memoryData.length;
+      renderMemoryCard(currentMemoryIndex);
+    }
+
+
+    // ==========================================
+    // 5. Slide 4: Reward Coupon Modal
+    // ==========================================
+    const couponDetails = {
+      shabu: {
+        emoji: '🥩',
+        title: 'คูปองบุฟเฟต์ชาบู / หมูกระทะ',
+        desc: 'บันทึกคำขอแล้ว! ดีลเลยเย็นนี้เตรียมท้องไว้เลยนะค้าบ เดี๋ยวเค้าคีบหมูแกะกุ้งให้กินไม่อั้น 🤫🍲'
+      },
+      omakase: {
+        emoji: '🥩',
+        title: 'คูปองโอมากาเสะสุดหรู (ซอยจุ๊ ลาบขม ต้มแซ่บ)',
+        desc: 'โอมากาเสะสไตล์แซ่บๆ! ซอยจุ๊สดๆ ลาบขม ต้มแซ่บร้อนๆ จัดเต็ม ดีลเลยเย็นนี้พาไปแซ่บถึงใจแน่นอนค้าบ 🥩🌶️✨'
+      },
+      cafe: {
+        emoji: '🍰',
+        title: 'คูปองคาเฟ่ & ตากล้องส่วนตัว',
+        desc: 'อนุมัติเรียบร้อย! ขนมหวาน ชานมไข่มุกสั่งได้ไม่อั้น พร้อมบริการถ่ายรูปให้ 500 รูปจนกว่าจะพอใจ 📸🧁'
+      },
+      any: {
+        emoji: '🥰',
+        title: 'คูปองตามใจแฟนทุกอย่าง',
+        desc: 'วันนี้เธอยิ่งใหญ่ที่สุดในบ้าน! สั่งอะไรเค้ายอมหมดทุกอย่างเลยครับ ขอแค่เธอยิ้มเยอะๆ มีความสุขมากๆ พอ 💖'
+      }
+    };
+
+    function claimCoupon(type) {
+      const data = couponDetails[type] || couponDetails.any;
+      document.getElementById('modal-emoji').innerText = data.emoji;
+      document.getElementById('modal-title').innerText = data.title;
+      document.getElementById('modal-desc').innerText = data.desc;
+
+      const modal = document.getElementById('coupon-modal');
+      const modalCard = document.getElementById('modal-card');
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modalCard.classList.remove('scale-90');
+        modalCard.classList.add('scale-100');
+      }, 50);
+
+      confetti({
+        particleCount: 60,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: ['#FFD1DC', '#FFE4E8', '#FF8FAB', '#FFF3B0']
+      });
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('coupon-modal');
+      const modalCard = document.getElementById('modal-card');
+
+      modal.classList.add('opacity-0');
+      modalCard.classList.remove('scale-100');
+      modalCard.classList.add('scale-90');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    function copyOrNotify() {
+      const toast = document.getElementById('toast');
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.remove('opacity-0');
+      }, 50);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 300);
+      }, 3000);
+    }
+
+
+    // ==========================================
+    // 6. Floating Background Hearts Generator & Swipes
+    // ==========================================
+    function createFloatingHearts() {
+      const container = document.getElementById('floating-hearts-container');
+      const emojis = ['💖', '🌸', '✨', '💕', '🌷', '🧁'];
+      const totalHearts = 12;
+
+      for (let i = 0; i < totalHearts; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'bg-heart';
+        heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.fontSize = `${Math.random() * 14 + 14}px`;
+        heart.style.animationDuration = `${Math.random() * 7 + 6}s`;
+        heart.style.animationDelay = `${Math.random() * 5}s`;
+        heart.style.opacity = `${Math.random() * 0.4 + 0.25}`;
+        container.appendChild(heart);
+      }
+    }
+
+    // Touch Swipe Gesture Detection for Mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      if (Math.abs(swipeDistance) > 60) {
+        if (swipeDistance < 0) {
+          // Swipe Left -> Next Slide
+          nextSlide();
+        } else {
+          // Swipe Right -> Prev Slide
+          prevSlide();
+        }
+      }
+    }
+
+    // ==========================================
+    // 7. Initialize Everything on Load
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      createFloatingHearts();
+      initMemoryCarousel();
+      updateSlideUI();
+    });
+  </script>
+
+</body>
+</html>
